@@ -156,7 +156,7 @@ trait Setters
      */
     public function date(Carbon $date)
     {
-        $this->date = $date;
+        $this->date = $date->format('d/m/Y');
 
         return $this;
     }
