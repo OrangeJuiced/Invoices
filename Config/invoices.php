@@ -26,6 +26,28 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Default Decimal Point
+    |--------------------------------------------------------------------------
+    |
+    | This value is the default decimal precision that is going to be used
+    | to perform all the calculations.
+    */
+
+   'decimalpoint' => ',',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default Thousand Separator
+    |--------------------------------------------------------------------------
+    |
+    | This value is the default decimal precision that is going to be used
+    | to perform all the calculations.
+    */
+
+   'thousandseparator' => '.',
+
+    /*
+    |--------------------------------------------------------------------------
     | Default Tax
     |--------------------------------------------------------------------------
     |

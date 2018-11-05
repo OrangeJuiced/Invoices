@@ -69,6 +69,51 @@ trait Setters
     }
 
     /**
+     * Set the invoice decimal point.
+     *
+     * @method decimals
+     *
+     * @param $decimalpoint
+     * @return self
+     */
+    public function decimalpoint($decimalpoint)
+    {
+        $this->decimalpoint = $decimalpoint;
+
+        return $this;
+    }
+
+    /**
+     * Set the invoice decimal point.
+     *
+     * @method decimals
+     *
+     * @param $status
+     * @return self
+     */
+    public function status($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Set the invoice decimal point.
+     *
+     * @method decimals
+     *
+     * @param $thousandseparator
+     * @return self
+     */
+    public function thousandseparator($thousandseparator)
+    {
+        $this->thousandseparator = $thousandseparator;
+
+        return $this;
+    }
+
+    /**
      * Set the invoice tax.
      *
      * @method tax
@@ -80,22 +125,6 @@ trait Setters
     public function tax($tax)
     {
         $this->tax = $tax;
-
-        return $this;
-    }
-
-    /**
-     * Set the invoice tax type.
-     *
-     * @method taxType
-     *
-     * @param string $tax_type
-     *
-     * @return self
-     */
-    public function taxType($tax_type)
-    {
-        $this->tax_type = $tax_type;
 
         return $this;
     }

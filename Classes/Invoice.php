@@ -1,12 +1,12 @@
 <?php
 /**
-  * This file is part of consoletvs/invoices.
-  *
-  * (c) Erik Campobadal <soc@erik.cat>
-  *
-  * For the full copyright and license information, please view the LICENSE
-  * file that was distributed with this source code.
-  */
+ * This file is part of consoletvs/invoices.
+ *
+ * (c) Erik Campobadal <soc@erik.cat>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace ConsoleTVs\Invoices\Classes;
 
@@ -74,6 +74,20 @@ class Invoice
     public $decimals;
 
     /**
+     * Invoice decimal precision.
+     *
+     * @var int
+     */
+    public $decimalpoint;
+
+    /**
+     * Invoice decimal precision.
+     *
+     * @var int
+     */
+    public $thousandseparator;
+
+    /**
      * Invoice logo.
      *
      * @var string
@@ -130,6 +144,13 @@ class Invoice
     private $pdf;
 
     /**
+     * Stores the PDF object.
+     *
+     * @var string
+     */
+    public $status;
+
+    /**
      * Create a new invoice instance.
      *
      * @method __construct
@@ -142,7 +163,6 @@ class Invoice
         $this->items = Collection::make([]);
         $this->currency = config('invoices.currency');
         $this->tax = config('invoices.tax');
-        $this->tax_type = config('invoices.tax_type');
         $this->decimals = config('invoices.decimals');
         $this->logo = config('invoices.logo');
         $this->logo_height = config('invoices.logo_height');
@@ -150,6 +170,8 @@ class Invoice
         $this->business_details = Collection::make(config('invoices.business_details'));
         $this->customer_details = Collection::make([]);
         $this->footnote = config('invoices.footnote');
+        $this->decimalpoint = config('invoices.decimalpoint');
+        $this->thousandseparator = config('invoices.thousandseparator');
     }
 
     /**
@@ -172,20 +194,18 @@ class Invoice
      * @method addItem
      *
      * @param string $name
-     * @param int    $price
-     * @param int    $ammount
-     * @param string $id
-     *
+     * @param string $start
+     * @param string $end
+     * @param float  $price
      * @return self
      */
-    public function addItem($name, $price, $ammount = 1, $id = '-')
+    public function addItem($name, $start, $end, $price)
     {
         $this->items->push(Collection::make([
             'name'       => $name,
-            'price'      => $price,
-            'ammount'    => $ammount,
-            'totalPrice' => number_format(bcmul($price, $ammount, $this->decimals), $this->decimals),
-            'id'         => $id,
+            'start'      => $start,
+            'end'        => $end,
+            'price'      => number_format($price, $this->decimals, $this->decimalpoint, $this->thousandseparator),
         ]));
 
         return $this;
@@ -221,7 +241,7 @@ class Invoice
     }
 
     /**
-     * Return the subtotal invoice price.
+     * Return the subtotal invoice price. Tax is removed from the subtotal.
      *
      * @method subTotalPrice
      *
@@ -229,9 +249,11 @@ class Invoice
      */
     private function subTotalPrice()
     {
-        return $this->items->sum(function ($item) {
-            return bcmul($item['price'], $item['ammount'], $this->decimals);
+        $sum = $this->items->sum(function ($item) {
+            return round($item['price'], 2);
         });
+
+        return round($sum / ($this->tax + 100) * 100, 2);
     }
 
     /**
@@ -243,11 +265,11 @@ class Invoice
      */
     public function subTotalPriceFormatted()
     {
-        return number_format($this->subTotalPrice(), $this->decimals);
+        return number_format($this->subTotalPrice(), $this->decimals, $this->decimalpoint, $this->thousandseparator);
     }
 
     /**
-     * Return the total invoce price after aplying the tax.
+     * Return the total invoice price after applying the tax.
      *
      * @method totalPrice
      *
@@ -267,11 +289,11 @@ class Invoice
      */
     public function totalPriceFormatted()
     {
-        return number_format($this->totalPrice(), $this->decimals);
+        return number_format($this->totalPrice(), $this->decimals, $this->decimalpoint, $this->thousandseparator);
     }
 
     /**
-     * taxPrice.
+     * Return the amount of tax on the invoice.
      *
      * @method taxPrice
      *
@@ -295,7 +317,7 @@ class Invoice
      */
     public function taxPriceFormatted()
     {
-        return number_format($this->taxPrice(), $this->decimals);
+        return number_format($this->taxPrice(), $this->decimals, $this->decimalpoint, $this->thousandseparator);
     }
 
     /**
