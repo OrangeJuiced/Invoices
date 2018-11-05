@@ -14,7 +14,7 @@
         <img class="img-rounded" height="{{ $invoice->logo_height }}" src="{{ $invoice->logo }}">
     </div>
     <div style="margin-left:300pt;">
-        <b>Creation Date: </b>{{ $invoice->date }}<br>
+        <b>Invoice Date: </b>{{ $invoice->date }}<br>
         <b>Status:</b> {{ $invoice->status }}
     </div>
 </div>
@@ -22,7 +22,7 @@
 <h2>{{ $invoice->name }} {{ $invoice->number ? '#' . $invoice->number : '' }}</h2>
 <div style="clear:both; position:relative;">
     <div style="position:absolute; left:0pt; width:250pt;">
-        <h4>Business Details:</h4>
+        <h4>Pay to:</h4>
         <div class="panel panel-default">
             <div class="panel-body">
                 {{ $invoice->business_details->get('name') }}<br>
@@ -33,7 +33,7 @@
         </div>
     </div>
     <div style="margin-left: 300pt;">
-        <h4>Customer Details:</h4>
+        <h4>Invoiced to:</h4>
         <div class="panel panel-default">
             <div class="panel-body">
                 {{ $invoice->customer_details->get('name') }}<br />
