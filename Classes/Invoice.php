@@ -172,6 +172,7 @@ class Invoice
         $this->footnote = config('invoices.footnote');
         $this->decimalpoint = config('invoices.decimalpoint');
         $this->thousandseparator = config('invoices.thousandseparator');
+        $this->tax_type = config('invoices.tax_type');
     }
 
     /**
