@@ -200,7 +200,7 @@ class Invoice
      * @param float  $price
      * @return self
      */
-    public function addItem($name, $start, $end, $price)
+    public function addItem($name, $price, $start = '', $end = '')
     {
         $this->items->push(Collection::make([
             'name'       => $name,

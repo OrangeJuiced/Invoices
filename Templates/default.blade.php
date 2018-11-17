@@ -58,7 +58,7 @@
         <tr>
             <td>{{ $loop->iteration }}</td>
             <td>{{ $item->get('name') }}</td>
-            <td>({{ $item->get('start') }} - {{ $item->get('end') }})</td>
+            <td>@if($item->get('start') !== '')({{ $item->get('start') }} - {{ $item->get('end') }})@endif</td>
             <td>{{ $invoice->formatCurrency()->symbol }}{{ $item->get('price') }}</td>
         </tr>
     @endforeach
