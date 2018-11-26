@@ -203,10 +203,11 @@ class Invoice
     public function addItem($name, $price, $start = '', $end = '')
     {
         $this->items->push(Collection::make([
-            'name'       => $name,
-            'start'      => $start,
-            'end'        => $end,
-            'price'      => number_format($price, $this->decimals, $this->decimalpoint, $this->thousandseparator),
+            'name'              => $name,
+            'start'             => $start,
+            'end'               => $end,
+            'price'             => number_format($price, $this->decimals),
+            'price_formatted'   => number_format($price, $this->decimals, $this->decimalpoint, $this->thousandseparator),
         ]));
 
         return $this;
@@ -330,6 +331,8 @@ class Invoice
      */
     private function generate()
     {
+
+
         $this->pdf = PDF::generate($this);
 
         return $this;
